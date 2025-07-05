@@ -10,14 +10,14 @@ const TaxAdviceStep = ({ extractedData, formType, onBack, onComplete }) => {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:5001/tax-advice', {
+      const response = await fetch('/api/documents/resume-feedback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          extracted_data: extractedData,
-          form_type: formType
+          resumeData: extractedData,
+          customPrompt: `Provide tax advice for ${formType} form data`
         }),
       });
 
@@ -26,7 +26,7 @@ const TaxAdviceStep = ({ extractedData, formType, onBack, onComplete }) => {
       }
 
       const data = await response.json();
-      setTaxAdvice(data.advice);
+      setTaxAdvice(data.data.feedback);
     } catch (err) {
       setError(err.message);
     } finally {
